@@ -1,0 +1,29 @@
+/* header  */
+header {
+  height: 60px;
+  max-height: 60px;
+  z-index: 1000;
+}
+@media (min-width: 1024px) {
+  .form-inline {
+    width: 60%;
+  }
+}
+@media (min-width: 1200px) {
+  .form-inline {
+    width: 35%;
+  }
+}
+
+/* main */
+.price {
+  font-size: 18px;
+}
+
+/* footer  */
+footer .list-group {
+  padding: 3%;
+}
+footer .list-group-item {
+  font-size: 13px;
+}

@@ -1,0 +1,91 @@
+/* body  */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  font-family: "Poppins", sans-serif;
+  font-family: "Wix Madefor Display", sans-serif;
+  background-color: rgba(227, 216, 210, 0.3);
+  overflow-x: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+h1 {
+  color: black;
+  padding-left: 10%;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+/* navigation bar */
+.navigationbar {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  background-color: white;
+  z-index: 1;
+}
+.navbar-brand {
+  font-size: 25px;
+}
+
+/* shopping cart modal  */
+.modal-backdrop {
+  z-index: -1;
+}
+.modal {
+  z-index: 99999 !important;
+}
+.list-group .list-group-item small .form-control {
+  width: 45px;
+  height: 25px;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+}
+.form-control:focus {
+  border-color: rgba(227, 216, 210, 0.7);
+  box-shadow: 0 0 0 0.2rem rgba(227, 216, 210, 0.5);
+}
+
+/* footer  */
+footer {
+  background-color: rgba(93, 44, 24, 0.3);
+  width: 100vw;
+  text-align: center;
+}
+footer div p,
+footer ul li a {
+  color: #4b2518;
+}
+footer .list-title {
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+}
+.copyright {
+  font-size: 14px;
+}
+.blockquote-footer::before {
+  display: none;
+}
+footer .col {
+  flex-basis: auto;
+}
+@media (min-width: 768px) {
+  footer .col {
+    flex-basis: 0;
+  }
+}

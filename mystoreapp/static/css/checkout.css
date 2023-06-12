@@ -1,0 +1,35 @@
+/* header  */
+header {
+  height: 60px;
+  max-height: 60px;
+  z-index: 1000;
+}
+@media (min-width: 1024px) {
+  .form-inline {
+    width: 60%;
+  }
+}
+@media (min-width: 1200px) {
+  .form-inline {
+    width: 35%;
+  }
+}
+
+/* main */
+.price {
+  font-size: 18px;
+}
+.divider {
+  margin: auto;
+  border-top: 1px solid #dee2e6;
+  border-bottom-right-radius: calc(0.3rem - 1px);
+  border-bottom-left-radius: calc(0.3rem - 1px);
+}
+
+/* footer  */
+footer .list-group-item {
+  font-size: 13px;
+}
+footer .list-group {
+  padding: 3%;
+}
