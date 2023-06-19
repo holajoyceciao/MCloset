@@ -15,4 +15,6 @@ class CheckoutForm(FlaskForm):
     postal_code = StringField("ZIP CODE", validators=[InputRequired()])
     cart = StringField("CART", validators=[InputRequired()])
     submit = SubmitField("Place Order")
+
+    # render_kw={'onclick': 'createCheckoutSession();'}
     

@@ -1,9 +1,11 @@
 import json
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from utils import common
+import stripe
 
 from controllers import checkout_controller as controller
 from models import checkout as model
+import env as app_env
 
 from utils import api_result
 from utils.CheckoutForm import CheckoutForm
@@ -46,3 +48,31 @@ def add_checkout():
         return redirect(url_for('checkout.get_checkout', success='true'))
     
     return api_result.status_result(status_code=400)
+
+
+@controller.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    domain = 'http://' + app_env.SERVER_HOST + ':' + app_env.SERVER_PORT
+    stripe.api_key = app_env.STRIPE_SECRET_KEY
+    try:
+        # data from frontend 
+        checkout_session = stripe.checkout.Session.create(
+            success_url= domain + '/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url= domain + '/cancel',
+            payment_method_types=["card"],
+            line_items=[{
+                'price_data': {
+                    'currency': 'aus',
+                    'product_data': {
+                        'name': 'T-shirt',
+                    },
+                    'unit_amount': 90000,
+                },
+                'quantity': 1,
+            },
+        ],
+            mode='payment',
+        )
+        return jsonify({"sessionId" : checkout_session["id"]})
+    except Exception as e:
+        return str(e)

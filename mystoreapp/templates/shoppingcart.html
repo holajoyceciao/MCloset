@@ -49,6 +49,10 @@
       integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
       crossorigin="anonymous"
     ></script>
+
+    
+    <!-- stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
   </head>
   <body>
     <!-- header  -->
@@ -178,6 +182,8 @@
         class="btn btn-primary">
           Go to Checkout
         </a>
+        
+        <button type="button" class="btn btn-primary" onclick="createCheckoutSession()">Payment</button>
       </div>
       {% else %}
       <div id="emptyCart" class="mx-auto bg-white p-lg-5 p-4 rounded shadow"> 
@@ -237,6 +243,7 @@
     </footer>
     <script src="../static/js/common.js"></script>
     <script src="../static/js/shoppingcart.js"></script>
+    <script src="../static/js/stripe.js"></script>
     <script>
       getSessionProducts('cart');
       updateItemCount('cart');

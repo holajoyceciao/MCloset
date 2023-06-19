@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from utils.database import db
 import os
+import stripe
 
 from controllers import product_controller, category_controller, cart_controller, checkout_controller
 from models import product as product_model, category as category_model
@@ -21,6 +22,9 @@ db.init_app(app)
 # create DB
 with app.app_context():
     db.create_all()
+
+# This is your test secret API key.
+stripe.api_key = app_env.STRIPE_SECRET_KEY
 
 # ---------------------------------------------------------------------------------------------------------- #
 

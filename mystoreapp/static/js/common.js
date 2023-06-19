@@ -25,7 +25,7 @@ function getSessionProducts(page) {
       if (success === "true") {
         sessionStorage.removeItem("cart");
         alert("Order Received!");
-        window.location.href = "/";
+        window.location.href = "/success";
         return;
       }
     }
