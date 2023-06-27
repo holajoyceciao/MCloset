@@ -23,11 +23,17 @@ function getSessionProducts(page) {
     if (page === "checkout") {
       let success = new URLSearchParams(window.location.search).get("success");
       if (success === "true") {
+        createCheckoutSession();
+
+        return;
+      }
+      let payment = new URLSearchParams(window.location.search).get("payment");
+      if (payment === "paid") {
         sessionStorage.removeItem("cart");
         alert("Order Received!");
         window.location.href = "/success";
-        return;
       }
+      return;
     }
 
     if (!window.location.href.includes(url)) {

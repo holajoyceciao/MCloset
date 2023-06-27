@@ -10,6 +10,8 @@ import env as app_env
 from utils import api_result
 from utils.CheckoutForm import CheckoutForm
 
+order_info = {}
+
 @controller.route('/', methods=['GET'])
 def get_checkout():
     form = CheckoutForm()
@@ -21,6 +23,7 @@ def get_checkout():
 
 @controller.route('/', methods=['POST'])
 def add_checkout():
+    global order_info
     form = CheckoutForm()
 
     if form.validate_on_submit():
@@ -35,7 +38,6 @@ def add_checkout():
             'postal_code': form.postal_code.data,
             'cart': json.loads(form.cart.data)
         }
-        code = 200 if model.add_order(order_info) else 400
         form.firstname.data = ''
         form.surname.data = ''
         form.email.data = ''
@@ -44,7 +46,6 @@ def add_checkout():
         form.city.data = ''
         form.state.data = ''
         form.postal_code.data = ''
-        flash('Form submitted successfully.')
         return redirect(url_for('checkout.get_checkout', success='true'))
     
     return api_result.status_result(status_code=400)
@@ -54,25 +55,44 @@ def add_checkout():
 def create_checkout_session():
     domain = 'http://' + app_env.SERVER_HOST + ':' + app_env.SERVER_PORT
     stripe.api_key = app_env.STRIPE_SECRET_KEY
+    
+    cart_items = request.get_json()['request']
+    line_items = []
+    for items in cart_items:
+        line_item={
+                    'price_data': {
+                        'currency': 'aud',
+                        'product_data': {
+                            'name': items['product_name'] + ' ' + items['color'] + ' ' +'Size:' + items['size'] ,
+                        },
+                        'unit_amount': int(items['price'])*100,
+                    },
+                    'quantity': int(items['quantity']),
+                },
+        line_items.append(line_item)
+    
+    line_items_tuple = line_items
+    line_items = [item[0] for item in line_items_tuple]
+
     try:
         # data from frontend 
         checkout_session = stripe.checkout.Session.create(
-            success_url= domain + '/success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url= domain + '/cancel',
+            success_url= domain + '/checkout/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url= domain + '/checkout/cancel',
             payment_method_types=["card"],
-            line_items=[{
-                'price_data': {
-                    'currency': 'aus',
-                    'product_data': {
-                        'name': 'T-shirt',
-                    },
-                    'unit_amount': 90000,
-                },
-                'quantity': 1,
-            },
-        ],
+            line_items=line_items,
             mode='payment',
         )
         return jsonify({"sessionId" : checkout_session["id"]})
     except Exception as e:
+        print(e)
         return str(e)
+    
+@controller.route('/success', methods=['GET'])
+def handle_checkout_success():
+    code = 400
+    session_id = request.args.get('session_id')
+    if session_id:
+        code = 200 if model.add_order(order_info) else 400
+
+    return redirect(url_for('checkout.get_checkout', payment='paid'))

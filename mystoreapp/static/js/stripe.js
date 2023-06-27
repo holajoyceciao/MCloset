@@ -1,4 +1,6 @@
 async function createCheckoutSession() {
+  let cartItem = JSON.parse(sessionStorage.getItem("cart")) || [];
+
   try {
     const response = await fetch("/checkout/create-checkout-session", {
       method: "POST",
@@ -6,7 +8,7 @@ async function createCheckoutSession() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        request: "test",
+        request: cartItem,
       }),
     });
 
@@ -17,6 +19,7 @@ async function createCheckoutSession() {
     const stripe = Stripe(
       "pk_test_51NHybZFtRmC6GWxQE7E8vVeO32laNHkrJsgLp0tcFAlalhBZYfnRkfIVD2zXulfUpviMJvRHGCHMYk84W1ZJQOaV00x9RAxmnV"
     );
+
     return stripe.redirectToCheckout({ sessionId: result.sessionId });
   } catch (error) {
     console.error(error);
