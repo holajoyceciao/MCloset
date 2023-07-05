@@ -54,8 +54,8 @@ def add_checkout():
 
 @controller.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
-    domain = 'http://' + os.environ['SERVER_HOST'] + ':' + os.environ['SERVER_PORT']
-    stripe.api_key = os.environ['STRIPE_SECRET_KEY']
+    domain = 'http://' + os.environ.get('SERVER_HOST') + ':' + os.environ.get('SERVER_PORT')
+    stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
     
     cart_items = request.get_json()['request']
     line_items = []

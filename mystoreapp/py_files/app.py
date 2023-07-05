@@ -17,7 +17,7 @@ cwd = os.getcwd()
 db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'instance', 'mcloset.sqlite')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 # app.config['SECRET_KEY'] = app_env.SECRET_KEY
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 db.init_app(app)
 
 # create DB
@@ -25,7 +25,7 @@ with app.app_context():
     db.create_all()
 
 # This is your test secret API key.
-stripe.api_key = os.environ['STRIPE_SECRET_KEY']
+stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
 
 # ---------------------------------------------------------------------------------------------------------- #
 
@@ -71,7 +71,7 @@ app.register_blueprint(checkout_controller)
 
 # run app
 def run_app():
-    app.run(host=os.environ['SERVER_HOST'], port=os.environ['SERVER_PORT'], debug=os.environ['SERVER_DEBUG'])
+    app.run(host=os.environ.get('SERVER_HOST'), port=os.environ.get('SERVER_PORT'), debug=os.environ.get('SERVER_DEBUG'))
 
 if __name__ == '__main__':
     run_app()
