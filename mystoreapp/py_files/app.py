@@ -7,7 +7,7 @@ from controllers import product_controller, category_controller, cart_controller
 from models import product as product_model, category as category_model
 from utils import api_result as app_result
 
-import env as app_env
+# import env as app_env
 
 # intialization
 app = Flask(__name__, static_folder='../static', template_folder='../templates')
@@ -16,7 +16,8 @@ app = Flask(__name__, static_folder='../static', template_folder='../templates')
 cwd = os.getcwd()
 db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'instance', 'mcloset.sqlite')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
-app.config['SECRET_KEY'] = app_env.SECRET_KEY
+# app.config['SECRET_KEY'] = app_env.SECRET_KEY
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 db.init_app(app)
 
 # create DB
@@ -24,7 +25,7 @@ with app.app_context():
     db.create_all()
 
 # This is your test secret API key.
-stripe.api_key = app_env.STRIPE_SECRET_KEY
+stripe.api_key = os.environ['STRIPE_SECRET_KEY']
 
 # ---------------------------------------------------------------------------------------------------------- #
 
@@ -70,7 +71,7 @@ app.register_blueprint(checkout_controller)
 
 # run app
 def run_app():
-    app.run(host=app_env.SERVER_HOST, port=app_env.SERVER_PORT, debug=app_env.SERVER_DEBUG)
+    app.run(host=os.environ['SERVER_HOST'], port=os.environ['SERVER_PORT'], debug=os.environ['SERVER_DEBUG'])
 
 if __name__ == '__main__':
     run_app()
